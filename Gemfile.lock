@@ -1,0 +1,45 @@
+PATH
+  remote: .
+  specs:
+    http_magic (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.3.5)
+    coderay (1.1.0)
+    columnize (0.3.6)
+    crack (0.4.1)
+      safe_yaml (~> 0.9.0)
+    debugger (1.6.5)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.3.1)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.3.1)
+    method_source (0.8.2)
+    minitest (4.7.5)
+    pry (0.9.12.4)
+      coderay (~> 1.0)
+      method_source (~> 0.8)
+      slop (~> 3.4)
+    pry-debugger (0.2.2)
+      debugger (~> 1.3)
+      pry (~> 0.9.10)
+    rake (10.1.1)
+    safe_yaml (0.9.7)
+    slop (3.4.7)
+    webmock (1.16.1)
+      addressable (>= 2.2.7)
+      crack (>= 0.3.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  http_magic!
+  minitest (~> 4.7.0)
+  pry
+  pry-debugger
+  rake
+  webmock (~> 1.16.0)
