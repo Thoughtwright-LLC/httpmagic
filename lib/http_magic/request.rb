@@ -23,8 +23,24 @@ module HttpMagic
       }
     end
 
+    # Makes a DELETE request to the url provided by the Uri object and returns
+    # the response parsed according to the content type specified in the
+    # repsonse.
+    #
+    # == Example
+    #
+    #   uri_object = HttpMagic::Uri.new('http://example.com')
+    #
+    #   request = Request.new(uri_object)
+    #
+    #   request.delete
+    #   => { 'name' => 'Foo Bar' }
+    def delete
+      parse_response http.delete(@uri.urn, @options[:headers])
+    end
+
     # Makes a GET request to the url provided by the Uri object and returns the
-    # resulting JSON data as a Ruby hash.
+    # response parsed according to the content type specified in the repsonse.
     #
     # == Example
     #
@@ -35,12 +51,13 @@ module HttpMagic
     #   request.get
     #   => { 'name' => 'Foo Bar' }
     def get
-      send_request :get
+      parse_response http.request_get(@uri.urn, @options[:headers])
     end
 
     # Makes a POST request to the url provided by the Uri object and returns the
-    # resulting JSON data as a Ruby hash. If data was provided as an optional
-    # initialization parameter, then that is also POSTed.
+    # response parsed according to the content type specified in the repsonse.
+    # If data was provided as an optional initialization parameter, then that is
+    # also POSTed.
     #
     # == Example
     #
@@ -51,10 +68,38 @@ module HttpMagic
     #   request.post
     def post
       if !@data.empty?
-        @options[:headers].merge!( 'content-type' => 'application/json' )
+        @options[:headers].merge!( 'Content-Type' => 'application/json' )
       end
 
-      send_request :post
+      parse_response http.request_post(
+        @uri.urn,
+        @data.to_json,
+        @options[:headers]
+      )
+    end
+
+    # Makes a PUT request to the url provided by the Uri object and returns the
+    # response parsed according to the content type specified in the repsonse.
+    # If data was provided as an optional initialization parameter, then that is
+    # also PUTed.
+    #
+    # == Example
+    #
+    #   uri_object = HttpMagic::Uri.new('http://example.com')
+    #
+    #   request = Request.new(uri_object, data: { name: 'New Foo' })
+    #
+    #   request.put
+    def put
+      if !@data.empty?
+        @options[:headers].merge!( 'Content-Type' => 'application/json' )
+      end
+
+      parse_response http.request_put(
+        @uri.urn,
+        @data.to_json,
+        @options[:headers]
+      )
     end
 
     private
@@ -66,13 +111,12 @@ module HttpMagic
       @http
     end
 
-    def send_request(method)
-      response = http.send_request(method, @uri.urn, @data.to_json, @options[:headers])
+    def parse_response(response)
       if response && response.is_a?(Net::HTTPSuccess)
-        if response.content_type == 'application/json'
+        if response.body && response.content_type == 'application/json'
           JSON.parse(response.body)
         else
-          response.body
+          response.body.to_s
         end
       else
         nil
