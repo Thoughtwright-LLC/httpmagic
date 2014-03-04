@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    http_magic (0.1.0)
+    http_magic (0.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -26,7 +26,7 @@ GEM
     pry-debugger (0.2.2)
       debugger (~> 1.3)
       pry (~> 0.9.10)
-    rake (10.1.1)
+    rake (0.9.6)
     safe_yaml (0.9.7)
     slop (3.4.7)
     webmock (1.16.1)
@@ -38,8 +38,8 @@ PLATFORMS
 
 DEPENDENCIES
   http_magic!
-  minitest (~> 4.7.0)
-  pry
-  pry-debugger
-  rake
-  webmock (~> 1.16.0)
+  minitest (~> 4.7)
+  pry (~> 0)
+  pry-debugger (~> 0)
+  rake (~> 0)
+  webmock (~> 1.16)
