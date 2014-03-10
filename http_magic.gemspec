@@ -1,7 +1,7 @@
 
 Gem::Specification.new do |s|
   s.name = 'http_magic'
-  s.version = '0.1.1'
+  s.version = '0.1.2'
   s.licenses = ['MIT']
   s.summary = 'Provides a more Object Oriented interface to RESTful apis.'
 
