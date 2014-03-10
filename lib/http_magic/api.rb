@@ -137,6 +137,26 @@ module HttpMagic
       self
     end
 
+    # Deletes a resource from the URI.
+    #
+    # Assuming an api where each resource is namespaced with 'api/v1' and where
+    # the url http://www.example.com/api/v1/foo/99 references a specific
+    # resource.
+    #
+    # == Example
+    #
+    #   class ExampleApi < HttpMagic::Api
+    #     url 'www.example.com'
+    #     namespace 'api/v1'
+    #   end
+    #
+    #   ExampleApi.foo[99].delete
+    #   => ""
+    def delete
+      request = Request.new(@uri, headers: @headers)
+      request.delete
+    end
+
     # Gets a resource from the URI and returns it based on its content type.
     # JSON content will be parsed and returned as equivalent Ruby objects. All
     # other content types will be returned as text.
@@ -203,6 +223,41 @@ module HttpMagic
         data: data,
       )
       request.post
+    end
+
+    # PUT's a resource to the URI and returns the result based on its content
+    # type. JSON content will be parsed and returned as equivalent Ruby objects.
+    # All other content types will be returned as text.
+    #
+    # Assuming an api where each resource is namespaced with 'api/v1' and where
+    # a GET to the url http://www.example.com/api/v1/foo/99 responds with the
+    # following.
+    #
+    # Header:
+    #
+    #   Content-Type: application/json
+    #
+    # Body:
+    #
+    #   {
+    #     "name": "Foo"
+    #   }
+    #
+    # == Example
+    #
+    #   class ExampleApi < HttpMagic::Api
+    #     url 'www.example.com'
+    #     namespace 'api/v1'
+    #   end
+    #
+    #   ExampleApi.foo[99].put(name: 'Changed Foo')
+    #   => { "name" => "Changed Foo" }
+    def put(data = {})
+      request = Request.new(@uri,
+        headers: @headers,
+        data: data,
+      )
+      request.put
     end
 
     # Instance scoped method_missing that accumulates the URN parts used in
